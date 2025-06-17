@@ -99,7 +99,7 @@ main:
      
     la $a0, vetor1
     la $a1, vetor2
-    #jal soma_vetores
+    jal soma_vetores
     
     li $v0, 4
     la $a0, msg_6
@@ -245,7 +245,7 @@ loop_prod_vet:
     j loop_prod_vet
 fim_loop_prod_vet:
     jr $ra
- 
+    
 #soma_vetores(int* vet1, int* vet2)
 #Guarde o endereco dos vetores em $a0 e $a1 antes de chamar a funcao                         EX: la $a0, vetor1
 #Calcula o vetor soma resultante de dois vetores e "retorna" os retultados em vetor_soma     #   la $a1, vetor2
@@ -257,8 +257,17 @@ soma_vetores:
     la $t4, vetor_soma
     
 loop_soma:
-    #bota aqui a condicao natha, lembra de usar o link "fim_loop_soma" no desvio
-    #faz o vetor_soma($a3) receber as somas dos elementos
+    bge $t0, $t2, fim_loop_soma
+    
+    lw  $t6, ($t1) #$t6 e $t7 recebem os elementos dos vetores
+    lw  $t7, ($t3) 
+    add $t5, $t6, $t7
+    sw  $t5, ($t4)
+    
+    addi $t0, $t0, 1
+    addi $t1, $t1, 4
+    addi $t3, $t3, 4
+    addi $t4, $t4, 4
     
     j loop_soma
 fim_loop_soma:
