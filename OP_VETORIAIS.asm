@@ -131,7 +131,7 @@ main:
     syscall
     
     la $a0, vetor1
-    #jal produto_escalar
+    jal produto_escalar
     
     la $a0, vetor_escalado
     jal imprime_vet
@@ -146,7 +146,7 @@ main:
     syscall
     
     la $a0, vetor2
-    #jal produto_escalar
+    jal produto_escalar
     
     la $a0, vetor_escalado
     jal imprime_vet
@@ -196,7 +196,7 @@ fim_laco_ini:
 imprime_vet:
     li $t0, 0          
     move $t1, $a0 
-    
+ 
 print_loop:
     bge $t0, $t2, fim_loop 
     
@@ -272,12 +272,17 @@ produto_escalar:
     move $t1, $a0 #vet
     move $t3, $a3 #escalar
     la $t4, vetor_escalado
-    li $t0, 0 
+    li $t0, 0 # contador
 loop_escalar:
-    #bota aqui a condicao Daniel, lembra de usar o link "fim_loop_escalar" no desvio
-    #faz o vetor_escalado($t4) receber os elementos multiplicados pelo escalar ($t3)
+    bge $t0, $t2, fim_loop_escalar
     
+    lw  $t6, ($t1) #$t6 e $t7 recebem os elementos dos vetores
+    mul $t5, $t6, $t3 
+    sw  $t5, ($t4)
     
+    addi $t0, $t0, 1
+    addi $t1, $t1, 4
+    addi $t4, $t4, 4
     j loop_escalar
 fim_loop_escalar:
     jr $ra 
